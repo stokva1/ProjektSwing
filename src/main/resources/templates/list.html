@@ -5,6 +5,8 @@
   <title>Title</title>
 </head>
 <body>
+<h1>All cars:</h1>
+<a th:href="@{'/create'}">Add new car</a>
   <ul>
     <li th:each="car, iter : ${cars}">
       <a th:href="@{'/detail/' + ${iter.index}}"><span th:text="${car.spz}"></span></a>
