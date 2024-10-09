@@ -6,12 +6,12 @@
 </head>
 <body>
  <h1>Car Details</h1>
- <a href="@{'/edit/' + ${id}}">Edit Car</a>
- <a href="@{'/delete/' + ${id}}">Delete Car</a>
+ <a th:href="@{'/edit/' + ${id}}">Edit Car</a>
+ <a th:href="@{'/delete/' + ${id}}">Delete Car</a>
 <table>
   <tr>
     <td>License number plate</td>
-    <td th:text="${car.spz}"></td>
+    <td th:text="${car.id}"></td>
   </tr>
   <tr>
     <td>Color</td>

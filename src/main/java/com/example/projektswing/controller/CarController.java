@@ -2,6 +2,8 @@ package com.example.projektswing.controller;
 
 
 import com.example.projektswing.model.Car;
+import com.example.projektswing.service.CarService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,30 +11,37 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.List;
 
 @Controller
 public class CarController {
-    private List<Car> cars;
+    private CarService carService;
+
+    @Autowired
+    public CarController(CarService carService) {
+        this.carService = carService;
+    }
+
 
     @GetMapping("/")
     public String listCars(Model model) {
-        model.addAttribute("cars", cars);
+        model.addAttribute("cars", carService.getAllCars());
         return "list";
     }
 
     @GetMapping("/detail/{id}")
-    public String detailCar(@PathVariable int id, Model model) {
-        model.addAttribute("car", cars.get(id));
-        model.addAttribute("id", id);
-        return "detail";
+    public String detailCar(Model model, @PathVariable int id) {
+        Car car = carService.getCarById(id);
+        if (car != null) {
+            model.addAttribute("car", car);
+            return "detail";
+        }
+        return "redirect:/";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editCar(@PathVariable int id, Model model) {
-        model.addAttribute("car", cars.get(id));
-        model.addAttribute("edit", true);
-        return "edit";
+    @GetMapping("/delete/{id}")
+    public String deleteCar(@PathVariable int id) {
+        carService.deleteCar(id);
+        return "redirect:/";
     }
 
     @GetMapping("/create")
@@ -42,28 +51,21 @@ public class CarController {
         return "edit";
     }
 
-    @GetMapping("/delete/{id}")
-    public String deleteCar(@PathVariable int id) {
-        cars.remove(id);
-        return "delete";
-    }
-
-    @PostMapping("/save")
-    public String createCar(@ModelAttribute Car car) {
-        int index = getCarIndex(car.getSpz());
-        if (index == -1) {
-            cars.remove(index);
+    @GetMapping("/edit/{id}")
+    public String editCar(Model model, @PathVariable int id) {
+        Car car = carService.getCarById(id);
+        if(car != null){
+            car.setId(id);
+            model.addAttribute("car", car);
+            model.addAttribute("edit", true);
+            return "edit";
         }
-        cars.add(car);
         return "redirect:/";
     }
 
-    private int getCarIndex(String spz) {
-        for (int i = 0; i < cars.size(); i++) {
-            if (cars.get(i).getSpz().equalsIgnoreCase(spz)) {
-                return i;
-            }
-        }
-        return -1;
+    @PostMapping("/save")
+    public String saveCar(@ModelAttribute Car car) {
+        carService.saveCar(car);
+        return "redirect:/";
     }
 }
