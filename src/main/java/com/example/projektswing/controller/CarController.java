@@ -3,69 +3,79 @@ package com.example.projektswing.controller;
 
 import com.example.projektswing.model.Car;
 import com.example.projektswing.service.CarService;
+import com.example.projektswing.service.DriverService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
+@RequestMapping("/cars")
 public class CarController {
+
     private CarService carService;
+    private DriverService driverService;
 
     @Autowired
-    public CarController(CarService carService) {
+    public CarController(CarService carService, DriverService driverService) {
         this.carService = carService;
+        this.driverService = driverService;
     }
 
-
     @GetMapping("/")
-    public String listCars(Model model) {
+    public String list(Model model){
         model.addAttribute("cars", carService.getAllCars());
-        return "list";
+        return "car_list";
     }
 
     @GetMapping("/detail/{id}")
-    public String detailCar(Model model, @PathVariable int id) {
+    public String detail(Model model, @PathVariable long id){
         Car car = carService.getCarById(id);
-        if (car != null) {
+        if(car != null){
             model.addAttribute("car", car);
-            return "detail";
+            return "car_detail";
         }
-        return "redirect:/";
+        return "redirect:/cars/";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteCar(@PathVariable int id) {
-        carService.deleteCar(id);
-        return "redirect:/";
+    public String delete(@PathVariable int id){
+        carService.deleteCarById(id);
+        return "redirect:/cars/";
     }
 
     @GetMapping("/create")
-    public String createCar(Model model) {
+    public String create(Model model){
         model.addAttribute("car", new Car());
         model.addAttribute("edit", false);
-        return "edit";
+        model.addAttribute("drivers", driverService.getAllDrivers());
+        return "car_edit";
     }
 
     @GetMapping("/edit/{id}")
-    public String editCar(Model model, @PathVariable int id) {
+    public String edit(Model model, @PathVariable int id){
         Car car = carService.getCarById(id);
         if(car != null){
             car.setId(id);
             model.addAttribute("car", car);
             model.addAttribute("edit", true);
-            return "edit";
+            model.addAttribute("drivers", driverService.getAllDrivers());
+            return "car_edit";
         }
-        return "redirect:/";
+        return "redirect:/cars/";
     }
 
     @PostMapping("/save")
-    public String saveCar(@ModelAttribute Car car) {
+    public String save(@Valid Car car, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
+            model.addAttribute("edit", true);
+            return "car_edit";
+        }
         carService.saveCar(car);
-        return "redirect:/";
+        return "redirect:/cars/";
     }
+
 }

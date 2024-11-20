@@ -1,39 +1,41 @@
 package com.example.projektswing.service;
 
 import com.example.projektswing.model.Car;
+import com.example.projektswing.repository.CarRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class CarServiceImpl implements CarService {
-    ArrayList<Car> cars = new ArrayList<>();
+public class CarServiceImpl implements CarService{
 
-    @Override
-    public ArrayList<Car> getAllCars() {
-        return cars;
+    private CarRepository carRepository;
+
+    @Autowired
+    public CarServiceImpl(CarRepository carRepository){
+        this.carRepository = carRepository;
     }
 
     @Override
-    public Car getCarById(int id) {
-        if(id > -1 && id < cars.size()){
-            return cars.get(id);
-        }
-        return null;
+    public List<Car> getAllCars() {
+        return carRepository.findAll();
     }
 
     @Override
-    public void deleteCar(int id) {
-        if(id > -1 && id < cars.size()){
-            cars.remove(id);
-        }
+    public Car getCarById(long id) {
+        Optional<Car> car = carRepository.findById(id);
+        return car.orElse(null);
+    }
+
+    @Override
+    public void deleteCarById(long id) {
+        carRepository.deleteById(id);
     }
 
     @Override
     public void saveCar(Car car) {
-        if(car.getId() > -1 && car.getId() < cars.size())
-            cars.remove(car.getId());
-        cars.add(car);
+        carRepository.save(car);
     }
-
 }
