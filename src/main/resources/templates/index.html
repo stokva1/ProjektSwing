@@ -2,14 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PPRO Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AkaliAirlines</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 30px auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .menu {
+            text-align: center;
+        }
+        .menu a {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            margin: 10px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+        }
+        .menu a:hover {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-<center>
-    <h1>PPRo Project</h1>
-    <a th:href="@{'/cars/'}">Evidence of Cars</a>
-    <br><br>
-    <a th:href="@{'/drivers/'}">Evidence of Drivers</a>
-</center>
+
+<div class="container">
+    <h1>AkaliAirlines</h1>
+    <div class="menu">
+        <a th:href="@{'/cars/'}">Evidence of Cars</a>
+        <a th:href="@{'/drivers/'}">Evidence of Drivers</a>
+        <a th:href="@{'/planes/'}">Evidence of Planes</a>
+        <a th:href="@{'/pilots/'}">Evidence of Pilots</a>
+    </div>
+</div>
+
 </body>
 </html>

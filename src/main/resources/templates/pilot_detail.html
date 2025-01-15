@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Detail of ' + ${pilot.name}">Pilot Detail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 70%;
+            max-width: 900px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .pilot-details {
+            margin-bottom: 30px;
+        }
+        .pilot-details b {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .pilot-details span {
+            color: #555;
+        }
+        .actions {
+            text-align: center;
+        }
+        .actions a {
+            text-decoration: none;
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: #fff;
+            border-radius: 5px;
+            margin: 0 10px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        .actions a:hover {
+            background-color: #2980b9;
+        }
+        .actions a.delete {
+            background-color: #e74c3c;
+        }
+        .actions a.delete:hover {
+            background-color: #c0392b;
+        }
+        .actions a.cancel {
+            background-color: #95a5a6;
+        }
+        .actions a.cancel:hover {
+            background-color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 th:text="'Detail of ' + ${pilot.name}"></h1>
+
+    <div class="pilot-details">
+        <p><b>Name: </b><span th:text="${pilot.name}"></span></p>
+        <p><b>Age: </b><span th:text="${pilot.age}"></span></p>
+        <p><b>Salary: </b><span th:text="${pilot.salary}"></span></p>
+    </div>
+
+    <div class="actions">
+        <a th:href="@{'/pilots/edit/' + ${pilot.id}}">Edit</a>
+        <a th:href="@{'/pilots/delete/' + ${pilot.id}}" class="delete">Delete</a>
+        <a th:href="@{'/pilots/'}" class="cancel">Cancel</a>
+    </div>
+</div>
+
+</body>
+</html>
